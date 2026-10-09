@@ -1,0 +1,17 @@
+
+services:
+  amazon-backend:
+    build: .
+    expose:
+      - "8000"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/reverse-proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - amazon-backend
+    restart: unless-stopped
